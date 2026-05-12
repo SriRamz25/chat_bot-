@@ -579,17 +579,17 @@ const PROVIDERS = {
     corsOk: true
   },
   groq: {
-    url: () => 'https://api.groq.com/openai/v1/chat/completions',
-    authHeader: k => `Bearer ${k}`,
+    url: () => '/.netlify/functions/chat',
+    authHeader: k => '',
     buildBody: (model, msgs, sysPrompt) => ({
       model,
       messages: [{ role: 'system', content: sysPrompt }, ...msgs],
       max_tokens: 2048, temperature: 0.7
     }),
     parseReply: d => d.choices?.[0]?.message?.content || '',
-    keyPrefix: 'gsk_',
+    keyPrefix: '',
     storageKey: 'axon_key_groq',
-    corsOk: false  // only works when served from localhost or a real domain
+    corsOk: true
   },
   openrouter: {
     url: () => 'https://openrouter.ai/api/v1/chat/completions',
@@ -733,7 +733,7 @@ async function sendMessage() {
   const input = document.getElementById('userInput');
   const text = input.value.trim();
   if (!text) return;
-  if (!apiKey) { showModal(); return; }
+  if (!apiKey && currentProvider !== 'groq') { showModal(); return; }
 
   input.value = ''; input.style.height = 'auto'; updateChar();
   isLoading = true;
