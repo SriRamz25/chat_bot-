@@ -637,7 +637,8 @@ function init() {
 
   renderHistory();
   apiKey = localStorage.getItem(PROVIDERS[currentProvider].storageKey) || '';
-  if (!apiKey) showModal();
+  
+  // Modal will not pop up automatically anymore. User must click the gear icon.
   document.getElementById('userInput').focus();
 }
 
